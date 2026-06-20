@@ -35,7 +35,9 @@ export default function Home() {
   const deadCount = players.filter((p) => !p.isAlive).length
   const phaseConfig = PHASE_CONFIG[currentPhase] ?? PHASE_CONFIG.complete
 
-  const canAddPlayer = currentPhase === 'complete' && currentTurn === 0 && !isSpectator
+  const canAddPlayer = currentPhase === 'complete' && currentTurn === 0
+
+  const spectatorTip = '旁观者模式：无操作权限'
 
   const disabledClass = isSpectator
     ? 'opacity-40 cursor-not-allowed pointer-events-none'
@@ -81,17 +83,17 @@ export default function Home() {
 
           <div className="flex items-center gap-2">
             {currentPhase === 'complete' && (
-              <button onClick={startNewTurn} disabled={isSpectator} className={`btn-gothic text-sm ${disabledClass}`}>
+              <button onClick={startNewTurn} disabled={isSpectator} title={isSpectator ? spectatorTip : undefined} className={`btn-gothic text-sm ${disabledClass}`}>
                 开始新回合
               </button>
             )}
             {(currentPhase === 'action' || currentPhase === 'conflict') && (
-              <button onClick={executeSettlement} disabled={isSpectator} className={`btn-gothic text-sm ${disabledClass}`}>
+              <button onClick={executeSettlement} disabled={isSpectator} title={isSpectator ? spectatorTip : undefined} className={`btn-gothic text-sm ${disabledClass}`}>
                 执行清算
               </button>
             )}
             {currentPhase === 'settlement' && (
-              <button onClick={completeTurn} disabled={isSpectator} className={`btn-gothic text-sm ${disabledClass}`}>
+              <button onClick={completeTurn} disabled={isSpectator} title={isSpectator ? spectatorTip : undefined} className={`btn-gothic text-sm ${disabledClass}`}>
                 结束回合
               </button>
             )}
@@ -105,6 +107,7 @@ export default function Home() {
             <button
               onClick={handleResetGame}
               disabled={isSpectator}
+              title={isSpectator ? spectatorTip : undefined}
               className={`btn-danger text-xs flex items-center gap-1.5 ${disabledClass}`}
             >
               <Skull className="w-3.5 h-3.5" />
@@ -120,6 +123,7 @@ export default function Home() {
             <button
               onClick={() => setShowAddPlayer(!showAddPlayer)}
               disabled={isSpectator}
+              title={isSpectator ? spectatorTip : undefined}
               className={`btn-gothic text-xs flex items-center gap-1.5 ${disabledClass}`}
             >
               <Plus className="w-3.5 h-3.5" />
@@ -171,7 +175,7 @@ export default function Home() {
                   className={`input-gothic text-sm w-20 ${disabledClass}`}
                 />
               </div>
-              <button onClick={handleAddPlayer} disabled={isSpectator} className={`btn-gothic text-sm ${disabledClass}`}>
+              <button onClick={handleAddPlayer} disabled={isSpectator} title={isSpectator ? spectatorTip : undefined} className={`btn-gothic text-sm ${disabledClass}`}>
                 添加玩家
               </button>
             </div>
